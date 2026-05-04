@@ -1,0 +1,32 @@
+# Spec is a working document, not part of the public repo
+spec.md
+
+# Videos and their generators are local artifacts
+**/video.py
+**/video.mp4
+**/media/
+
+# Local databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# uv
+.venv/
+.uv-cache/
+uv.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store

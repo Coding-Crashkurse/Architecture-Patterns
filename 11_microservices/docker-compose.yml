@@ -1,0 +1,70 @@
+name: library-microservices
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  db_north:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lib
+      POSTGRES_PASSWORD: lib
+      POSTGRES_DB: north
+    ports:
+      - "5432:5432"
+
+  db_south:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lib
+      POSTGRES_PASSWORD: lib
+      POSTGRES_DB: south
+    ports:
+      - "5433:5432"
+
+  db_west:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lib
+      POSTGRES_PASSWORD: lib
+      POSTGRES_DB: west
+    ports:
+      - "5434:5432"
+
+  north:
+    build: .
+    environment:
+      BRANCH: north
+      PORT: "8000"
+      DB_URL: postgresql+psycopg2://lib:lib@db_north:5432/north
+      PEERS: south=http://south:8000,west=http://west:8000
+    ports:
+      - "8011:8000"
+    depends_on:
+      - db_north
+
+  south:
+    build: .
+    environment:
+      BRANCH: south
+      PORT: "8000"
+      DB_URL: postgresql+psycopg2://lib:lib@db_south:5432/south
+      PEERS: north=http://north:8000,west=http://west:8000
+    ports:
+      - "8012:8000"
+    depends_on:
+      - db_south
+
+  west:
+    build: .
+    environment:
+      BRANCH: west
+      PORT: "8000"
+      DB_URL: postgresql+psycopg2://lib:lib@db_west:5432/west
+      PEERS: north=http://north:8000,south=http://south:8000
+    ports:
+      - "8013:8000"
+    depends_on:
+      - db_west

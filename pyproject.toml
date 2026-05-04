@@ -1,0 +1,29 @@
+[project]
+name = "architecture-patterns"
+version = "0.1.0"
+description = "Architecture Patterns with Python — Library Domain"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "sqlalchemy>=2.0",
+    "httpx>=0.28",
+    "pydantic>=2.10",
+    "alembic>=1.14",
+    "redis>=5.0",
+    "fakeredis>=2.26",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "hypothesis>=6.115",
+]
+video = [
+    "manim>=0.18",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+testpaths = ["."]
+python_files = ["test_*.py"]
